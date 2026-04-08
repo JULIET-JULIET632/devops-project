@@ -14,7 +14,8 @@ image:
   tag: "latest"
 
 # This is for the secrets for pulling an image from a private repository more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
-imagePullSecrets: []
+imagePullSecrets:
+ - name: devops-app-dockersecret 
 # This is to override the chart name.
 nameOverride: ""
 fullnameOverride: ""
@@ -54,10 +55,49 @@ service:
   # This sets the service type more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types
   type: ClusterIP
   # This sets the ports more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#field-spec-ports
-  port: 80
+  port: 3000
 
 # This block is for setting up the ingress for more information can be found here: https://kubernetes.io/docs/concepts/services-networking/ingress/
-ingress:
+ingress:docker build -t juliet237/devops-app:latest .
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  4.357MB
+Step 1/6 : FROM node:18
+ ---> b50082bc3670
+Step 2/6 : WORKDIR /app
+ ---> Using cache
+ ---> 69c29ae5145f
+Step 3/6 : COPY . .
+ ---> 8ee055f18276
+Step 4/6 : RUN npm install
+ ---> Running in 9c4513672f32
+
+added 68 packages, and audited 69 packages in 31s
+
+15 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+npm notice
+npm notice New major version of npm available! 10.8.2 -> 11.12.1
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v11.12.1
+npm notice To update run: npm install -g npm@11.12.1
+npm notice
+ ---> Removed intermediate container 9c4513672f32
+ ---> ed5714c153ef
+Step 5/6 : EXPOSE 3000
+ ---> Running in e519f6e1f9de
+ ---> Removed intermediate container e519f6e1f9de
+ ---> 97a74e863b73
+Step 6/6 : CMD ["node", "index.js"]
+ ---> Running in 2f523249335b
+ ---> Removed intermediate container 2f523249335b
+ ---> 9cf6a846fa5a
+Successfully built 9cf6a846fa5a
+Successfully tagged juliet237/devops-app:latest
+juliet@juliets-Pc237:~/devops-project$
   enabled: false
   className: ""
   annotations: {}
@@ -127,11 +167,11 @@ resources: {}
 livenessProbe:
   httpGet:
     path: /
-    port: http
+    port: 3000
 readinessProbe:
   httpGet:
     path: /
-    port: http
+    port: 3000
 
 # This section is for setting up autoscaling more information can be found here: https://kubernetes.io/docs/concepts/workloads/autoscaling/
 autoscaling:
